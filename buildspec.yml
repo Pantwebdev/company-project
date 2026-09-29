@@ -5,6 +5,7 @@ env:
     AWS_ACCOUNT_ID: "707604458390"
     AWS_DEFAULT_REGION: "ap-south-1"
     IMAGE_REPO_NAME: "company"
+    CONTAINER_NAME: "company"
 
 phases:
   pre_build:
@@ -28,3 +29,8 @@ phases:
       - IMAGE_TAG=$(cat /tmp/image_tag)
       - docker push "$REPOSITORY_URI:$IMAGE_TAG"
       - docker push "$REPOSITORY_URI:latest"
+      - printf '[{"name":"%s","imageUri":"%s"}]\n' "$CONTAINER_NAME" "$REPOSITORY_URI:$IMAGE_TAG" > imagedefinitions.json
+
+artifacts:
+  files:
+    - imagedefinitions.json
