@@ -1,0 +1,58 @@
+/* Mobile small screens */
+@media (max-width: 563px) {
+    .mainbanner h3 {
+        margin-top: 10px;
+    }
+
+    .changing-text {
+        font-size: 30px;
+        height: 45px;
+    }
+
+    .animated-shape {
+        top: 57%;
+        left: 46%;
+    }
+
+    form {
+        z-index: 999;
+    }
+
+    .bestservice .text-orange {
+        font-size: 2rem;
+        text-align: center;
+        font-weight: 500 !important;
+    }
+
+    .bestservice {
+        padding-top: 20px !important;
+    }
+
+    .best-box button {
+        width: 35%;
+    }
+
+    .cta-box button {
+        width: 100% !important;
+    }
+
+    #contactForm {
+        padding: 10px;
+    }
+
+    .contact-form-box {
+        padding: 5px;
+    }
+
+}
+
+
+@media (max-width: 768px) {
+    .form-detils input {
+        width: 100% !important;
+    }
+
+    .cta-box button {
+        width: 100%;
+    }
+}
