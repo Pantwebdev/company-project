@@ -5,7 +5,7 @@ env:
     AWS_ACCOUNT_ID: "707604458390"
     AWS_REGION: "ap-south-1"
     ECR_REPOSITORY_NAME: "codebuild"
-    CONTAINER_NAME: "codebuild"
+    CONTAINER_NAME: "website"
 
 phases:
   pre_build:
