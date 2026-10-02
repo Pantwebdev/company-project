@@ -1,0 +1,25 @@
+version: 0.2
+
+env:
+  variables:
+    AWS_ACCOUNT_ID: "707604458390"
+    AWS_REGION: "ap-south-1"
+    ECR_REPOSITORY_NAME: "codebuild"
+
+phases:
+  pre_build:
+    commands:
+      - test "$AWS_ACCOUNT_ID" != "YOUR_12_DIGIT_AWS_ACCOUNT_ID" || { echo "Set AWS_ACCOUNT_ID in buildspec.yml or the CodeBuild environment"; exit 1; }
+      - test "$AWS_REGION" != "YOUR_AWS_REGION" || { echo "Set AWS_REGION in buildspec.yml or the CodeBuild environment"; exit 1; }
+      - test "$ECR_REPOSITORY_NAME" != "YOUR_ECR_REPOSITORY_NAME" || { echo "Set ECR_REPOSITORY_NAME in buildspec.yml or the CodeBuild environment"; exit 1; }
+      - export REPOSITORY_URI="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY_NAME"
+      - export IMAGE_TAG=$(printf '%s' "${CODEBUILD_RESOLVED_SOURCE_VERSION:-$CODEBUILD_BUILD_NUMBER}" | cut -c 1-7)
+      - aws ecr get-login-password --region "$AWS_REGION" | docker login --username AWS --password-stdin "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com"
+  build:
+    commands:
+      - docker build -t "$REPOSITORY_URI:$IMAGE_TAG" .
+      - docker tag "$REPOSITORY_URI:$IMAGE_TAG" "$REPOSITORY_URI:latest"
+  post_build:
+    commands:
+      - docker push "$REPOSITORY_URI:$IMAGE_TAG"
+      - docker push "$REPOSITORY_URI:latest"
